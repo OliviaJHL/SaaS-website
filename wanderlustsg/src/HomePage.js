@@ -94,7 +94,7 @@ const HomePage = () => {
   }
   
 
-
+  //fetch image data from local file
   useEffect(() => {
     fetch('/image.json')
       .then(response => response.json())
@@ -105,6 +105,57 @@ const HomePage = () => {
         setFilteredData(data);})
       .catch(error => console.error('Error fetching image data:', error));
   }, []);
+  //fetch image data from S3, if S3 bucket exist, the code works when the bucket in S3 exist
+  // useEffect(() => {
+  //   // URL to your image.json that holds additional metadata
+  //   const jsonDataUrl = '/image.json'; 
+  //   const s3BaseUrl = 'https://wanderlustsg.s3.amazonaws.com/pics';
+  
+  //   // Fetch the JSON data first
+  //   fetch(jsonDataUrl)
+  //     .then(response => response.json())
+  //     .then(jsonData => {
+  //       // Assuming jsonData is an array of objects with at least 'id' that matches the image number in S3
+  //       const mergedData = jsonData.map(item => {
+  //         // Construct the S3 URL for each corresponding image using the 'id'
+  //         const imageUrl = `${s3BaseUrl}/${item.id}.jpeg`;
+  //         return {
+  //           ...item,  // spread the existing data
+  //           src: imageUrl,  // override or add the 'src' attribute
+  //           alt: `Image ${item.id}`  // add or modify the 'alt' attribute
+  //         };
+  //       });
+  
+  //       // Optionally shuffle data
+  //       const shuffledData = shuffleArray(mergedData);
+  //       setImageData(shuffledData);
+  //       setFilteredData(shuffledData);
+  //     })
+  //     .catch(error => console.error('Error fetching image metadata:', error));
+  // }, []);
+
+  
+  
+  // Fisher-Yates (Knuth) Shuffle algorithm
+  function shuffleArray(array) {
+    let currentIndex = array.length, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+  
+  
 
 
   // Attach the event listener on component mount
